@@ -1,0 +1,14 @@
+{
+  "name": "croppilot-ai",
+  "version": "1.0.0",
+  "description": "AI-Powered Agriculture Crop Advisory Assistant built with Google Gemini, React, Express, and Supabase",
+  "scripts": {
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "install:all": "npm --prefix server install && npm --prefix client install"
+  },
+  "keywords": ["agriculture", "ai", "gemini", "supabase", "antigravity", "crop-diagnosis"],
+  "author": "",
+  "license": "MIT"
+}
