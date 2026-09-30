@@ -138,6 +138,7 @@ The JSON must follow this exact schema:
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(6000),
         body: JSON.stringify({
           contents: [{ parts }],
           generationConfig: {
