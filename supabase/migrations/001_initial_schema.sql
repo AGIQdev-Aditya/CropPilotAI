@@ -69,9 +69,16 @@ ALTER TABLE public.crops ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.advisories ENABLE ROW LEVEL SECURITY;
 
 -- Allow all operations for authenticated and anon users (for workshop demonstration and evaluation)
+DROP POLICY IF EXISTS "Permissive access for farms" ON public.farms;
 CREATE POLICY "Permissive access for farms" ON public.farms FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Permissive access for fields" ON public.fields;
 CREATE POLICY "Permissive access for fields" ON public.fields FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Permissive access for crops" ON public.crops;
 CREATE POLICY "Permissive access for crops" ON public.crops FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Permissive access for advisories" ON public.advisories;
 CREATE POLICY "Permissive access for advisories" ON public.advisories FOR ALL USING (true) WITH CHECK (true);
 
 -- ==============================================================================
