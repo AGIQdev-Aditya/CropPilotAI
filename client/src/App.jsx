@@ -581,7 +581,7 @@ export default function App() {
         {activeTab === 'diagnose' && (
           <div className="space-y-6">
             {/* Agro-Weather & Spraying Window Banner */}
-            <div className="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 print:hidden">
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400">
                   <CloudRain className="w-4 h-4" />
@@ -609,9 +609,9 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start print:block">
               {/* Left Column: Input Form (5 cols) */}
-              <div className="lg:col-span-5 bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+              <div className="lg:col-span-5 bg-white rounded-2xl p-6 shadow-sm border border-slate-200 print:hidden">
                 <div className="flex items-center gap-2 pb-4 mb-4 border-b border-slate-100">
                   <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
                     <Sparkles className="w-5 h-5" />
@@ -785,7 +785,7 @@ export default function App() {
               </div>
 
               {/* Right Column: Diagnosis Results (7 cols) */}
-              <div id="diagnosis-results" className="lg:col-span-7 space-y-6">
+              <div id="diagnosis-results" className="lg:col-span-7 space-y-6 print:w-full print:m-0">
                 {activeDiagnosis ? (
                   <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden printable-card">
                     {/* Header */}
@@ -804,7 +804,7 @@ export default function App() {
                           </div>
                           <button
                             onClick={handlePrintPrescription}
-                            className="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-md flex items-center gap-1.5 font-semibold transition"
+                            className="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-md flex items-center gap-1.5 font-semibold transition print:hidden"
                             title="Print Prescription for Farmer"
                           >
                             <Printer className="w-3.5 h-3.5" />

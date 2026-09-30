@@ -15,7 +15,7 @@ const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 
 // CORS configuration for local development and live Vercel deployment
 app.use(cors({
-  origin: [CLIENT_URL, 'http://localhost:5173', 'http://127.0.0.1:5173', /\.vercel\.app$/],
+  origin: [CLIENT_URL, 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:5000', /\.vercel\.app$/],
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -119,7 +119,14 @@ The JSON must follow this exact schema:
 }
 `;
 
-  const candidateModels = ['gemini-3.8-flash', 'gemma-4-31b-it', 'gemini-2.5-pro'];
+  const candidateModels = [
+    'gemini-3.8-flash',
+    'gemini-3.7-flash',
+    'gemini-3.5-flash',
+    'gemini-3.1-flash-lite',
+    'gemma-4-31b-it',
+    'gemini-2.5-pro'
+  ];
   let textOutput = '';
 
   const parts = [{ text: prompt }];
