@@ -78,7 +78,7 @@ const fallbackMemory = {
 // ==============================================================================
 // GEMINI 3.8 FLASH CROP DIAGNOSIS ENGINE
 // ==============================================================================
-async function callGeminiAgronomist(cropName, stage, symptoms, soilType, weather) {
+async function callGeminiAgronomist(cropName, stage, symptoms, soilType, weather, imageData) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error('GEMINI_API_KEY is not configured in server environment.');
@@ -94,6 +94,7 @@ CROP DETAILS:
 - Soil Type: ${soilType || 'Loamy'}
 - Recent Weather: ${weather || 'Warm, humid'}
 - Reported Symptoms & Conditions: ${symptoms}
+${imageData ? '- Plant photo attached for leaf visual inspection.' : ''}
 
 You MUST return a clean JSON object without markdown formatting, codeblocks, or extra text.
 The JSON must follow this exact schema:
@@ -121,6 +122,16 @@ The JSON must follow this exact schema:
   const candidateModels = ['gemini-3.8-flash', 'gemma-4-31b-it', 'gemini-2.5-pro'];
   let textOutput = '';
 
+  const parts = [{ text: prompt }];
+  if (imageData && imageData.data && imageData.mimeType) {
+    parts.push({
+      inlineData: {
+        mimeType: imageData.mimeType,
+        data: imageData.data
+      }
+    });
+  }
+
   for (const m of candidateModels) {
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
@@ -128,7 +139,7 @@ The JSON must follow this exact schema:
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
+          contents: [{ parts }],
           generationConfig: {
             temperature: 0.2,
             topP: 0.8,
@@ -351,9 +362,13 @@ app.post('/api/advisory/diagnose', async (req, res) => {
     const schema = z.object({
       crop_name: z.string().min(2),
       stage: z.string().optional(),
-      symptoms: z.string().min(5),
+      symptoms: z.string().min(3),
       soil_type: z.string().optional(),
-      weather: z.string().optional()
+      weather: z.string().optional(),
+      image_data: z.object({
+        data: z.string(),
+        mimeType: z.string()
+      }).optional()
     });
     const parsed = schema.parse(req.body);
 
@@ -363,7 +378,8 @@ app.post('/api/advisory/diagnose', async (req, res) => {
       parsed.stage,
       parsed.symptoms,
       parsed.soil_type,
-      parsed.weather
+      parsed.weather,
+      parsed.image_data
     );
 
     const advisoryPayload = {
