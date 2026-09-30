@@ -231,6 +231,63 @@ The JSON must follow this exact schema:
 // REST API ROUTES
 // ==============================================================================
 
+// Root Landing Page
+app.get('/', (req, res) => {
+  res.send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CropPilotAI Backend API Server</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #f8fafc; padding: 40px; margin: 0; }
+    .card { max-width: 650px; margin: 0 auto; background: #1e293b; border-radius: 16px; padding: 32px; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: bold; background: #064e3b; color: #34d399; margin-bottom: 16px; }
+    h1 { margin: 0 0 8px; font-size: 24px; color: #ffffff; }
+    p { color: #94a3b8; font-size: 14px; line-height: 1.5; margin-bottom: 24px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .item { background: #0f172a; padding: 12px 16px; border-radius: 8px; border: 1px solid #334155; font-size: 13px; }
+    .item strong { color: #38bdf8; display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 4px; }
+    a.btn { display: inline-block; background: #10b981; color: #ffffff; font-weight: bold; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 14px; margin-right: 8px; }
+    a.btn-outline { background: transparent; border: 1px solid #475569; color: #cbd5e1; }
+    a.btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">● Server Active (Port 5000)</span>
+    <h1>🌾 CropPilotAI Backend API</h1>
+    <p>The Express.js REST API and Google Gemini 3.8 Flash Agronomist Engine are online and actively serving requests.</p>
+    
+    <div class="grid">
+      <div class="item">
+        <strong>Supabase PostgreSQL</strong>
+        ${Boolean(supabase) ? '🟢 Connected (upszactjcdplyyykkfof)' : '🟡 Fallback Memory Mode'}
+      </div>
+      <div class="item">
+        <strong>Gemini AI Model</strong>
+        ${Boolean(process.env.GEMINI_API_KEY) ? '🟢 Configured & Resilient' : '🔴 Missing Key'}
+      </div>
+      <div class="item">
+        <strong>API Health</strong>
+        <a href="/api/health" style="color: #34d399;">/api/health</a>
+      </div>
+      <div class="item">
+        <strong>Farms API</strong>
+        <a href="/api/farms" style="color: #34d399;">/api/farms</a>
+      </div>
+    </div>
+
+    <div>
+      <a href="http://localhost:5173" class="btn">Open Frontend App →</a>
+      <a href="/api/health" class="btn btn-outline">View JSON Health</a>
+    </div>
+  </div>
+</body>
+</html>
+  `);
+});
+
 // Health Check
 app.get('/api/health', (req, res) => {
   res.json({
